@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{29A29F8C-3A00-4141-94F6-8041539A366E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Oldmansoft.ApplicationService.MoneyBag.Application</RootNamespace>
+    <AssemblyName>Oldmansoft.ApplicationService.MoneyBag.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Oldmansoft.ClassicDomain, Version=4.0.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Domain.Net.4.0.17\lib\net45\Oldmansoft.ClassicDomain.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account.cs" />
+    <Compile Include="AppClient.cs" />
+    <Compile Include="ApplicationBase.cs" />
+    <Compile Include="InnerQueue.cs" />
+    <Compile Include="Money.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Oldmansoft.ApplicationService.MoneyBag.Core\Oldmansoft.ApplicationService.MoneyBag.Core.csproj">
+      <Project>{2e1d1505-0d10-4d3b-9a0a-d9fae1ab4f5d}</Project>
+      <Name>Oldmansoft.ApplicationService.MoneyBag.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Oldmansoft.ApplicationService.MoneyBag.DataDefinition\Oldmansoft.ApplicationService.MoneyBag.DataDefinition.csproj">
+      <Project>{739909d4-7f60-4643-98be-55cb38deaed7}</Project>
+      <Name>Oldmansoft.ApplicationService.MoneyBag.DataDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Oldmansoft.ApplicationService.MoneyBag.Data\Oldmansoft.ApplicationService.MoneyBag.Data.csproj">
+      <Project>{149af23a-4d86-4552-b04a-1adc192aab37}</Project>
+      <Name>Oldmansoft.ApplicationService.MoneyBag.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Oldmansoft.ApplicationService.MoneyBag.Repositories\Oldmansoft.ApplicationService.MoneyBag.Repositories.csproj">
+      <Project>{f3446b7f-95b7-4152-8e7f-f8ab81f95aed}</Project>
+      <Name>Oldmansoft.ApplicationService.MoneyBag.Repositories</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
