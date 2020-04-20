@@ -36,12 +36,12 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Data
         /// <summary>
         /// 交易值
         /// </summary>
-        public int TradeCent { get; private set; }
+        public int Trade { get; private set; }
 
         /// <summary>
         /// 交易后钱包的值
         /// </summary>
-        public int AfterCent { get; private set; }
+        public int After { get; private set; }
 
         /// <summary>
         /// 备注

@@ -24,12 +24,12 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Application
         /// </summary>
         /// <param name="accountId"></param>
         /// <param name="appId"></param>
-        /// <param name="orderId"></param>
+        /// <param name="order"></param>
         /// <param name="cent"></param>
         /// <returns></returns>
-        public DataDefinition.TradeState LockWallet(Guid accountId, Guid appId, string orderId, int cent)
+        public DataDefinition.TradeState LockWallet(Guid accountId, Guid appId, string order, int cent)
         {
-            return new Services.TradeService(Factory).LockWallet(accountId, appId, orderId, cent);
+            return new Services.TradeService(Factory).LockWallet(accountId, appId, order, cent);
         }
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Application
         /// </summary>
         /// <param name="accountId"></param>
         /// <param name="appId"></param>
-        /// <param name="orderId"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
-        public bool UnlockWallet(Guid accountId, Guid appId, string orderId)
+        public bool UnlockWallet(Guid accountId, Guid appId, string order)
         {
-            return new Services.TradeService(Factory).UnlockWallet(accountId, appId, orderId);
+            return new Services.TradeService(Factory).UnlockWallet(accountId, appId, order);
         }
 
         public List<Data.BillingData> PagingBilling(Guid accountId, int index, int size, out int totalCount)
@@ -73,9 +73,9 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Application
             return Factory.CreateWalletRepository().All();
         }
 
-        public Data.BillingData GetByClient(Guid clientAppId, string clientOrdreId)
+        public Data.BillingData GetByClient(Guid clientAppId, string clientOrder)
         {
-            var domain = Factory.CreateBillingRepository().GetByClient(clientAppId, clientOrdreId);
+            var domain = Factory.CreateBillingRepository().GetByClient(clientAppId, clientOrder);
             return domain.MapTo(new Data.BillingData());
         }
 

@@ -21,7 +21,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.DataDefinition
         /// <summary>
         /// 订单号
         /// </summary>
-        public string OrderId { get; set; }
+        public string Order { get; set; }
 
         /// <summary>
         /// 事务号
@@ -33,11 +33,11 @@ namespace Oldmansoft.ApplicationService.MoneyBag.DataDefinition
         /// </summary>
         public int Paid { get; set; }
 
-        public CallbackPostContent(Guid accountId, Guid appId, string orderId, long transactionId, int cent)
+        public CallbackPostContent(Guid accountId, Guid appId, string order, long transactionId, int cent)
         {
             AccountId = accountId;
             AppId = appId;
-            OrderId = orderId;
+            Order = order;
             TransactionId = transactionId;
             Paid = cent;
         }

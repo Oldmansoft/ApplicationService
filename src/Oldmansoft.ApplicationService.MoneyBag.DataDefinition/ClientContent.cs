@@ -19,18 +19,18 @@ namespace Oldmansoft.ApplicationService.MoneyBag.DataDefinition
         /// <summary>
         /// 订单号
         /// </summary>
-        public string OrderId { get; private set; }
+        public string Order { get; private set; }
 
         private ClientContent() { }
 
-        public static ClientContent Create(Guid appId, string orderId)
+        public static ClientContent Create(Guid appId, string order)
         {
             if (appId == Guid.Empty) throw new ArgumentNullException("appId");
-            if (string.IsNullOrWhiteSpace(orderId)) throw new ArgumentNullException("orderId");
+            if (string.IsNullOrWhiteSpace(order)) throw new ArgumentNullException("order");
 
             var result = new ClientContent();
             result.AppId = appId;
-            result.OrderId = orderId.Trim();
+            result.Order = order.Trim();
             return result;
         }
 
@@ -38,7 +38,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.DataDefinition
         {
             var result = new ClientContent();
             result.AppId = Guid.Empty;
-            result.OrderId = Guid.NewGuid().ToString("N");
+            result.Order = Guid.NewGuid().ToString("N");
             return result;
         }
     }

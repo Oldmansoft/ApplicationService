@@ -26,7 +26,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Infrastructure
 
         IList<Billing> List(Guid accountId, DateTime start, DateTime finish);
 
-        Billing GetByClient(Guid clientAppId, string clientOrdreId);
+        Billing GetByClient(Guid clientAppId, string clientOrdre);
 
         int CountRecharge(Guid accountId, int beforeDays);
     }

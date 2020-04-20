@@ -86,7 +86,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         {
             if (!Trading) return;
 
-            Cent = billing.AfterCent;
+            Cent = billing.After;
             LastTime = billing.Created;
             Trading = false;
         }
@@ -111,12 +111,12 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// 是否被其它人锁定
         /// </summary>
         /// <param name="appId"></param>
-        /// <param name="orderId"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
-        public bool IsLockedByOther(Guid appId, string orderId)
+        public bool IsLockedByOther(Guid appId, string order)
         {
             if (!IsLocked()) return false;
-            return !Locked.IsMime(appId, orderId);
+            return !Locked.IsMime(appId, order);
         }
 
         /// <summary>
@@ -132,12 +132,12 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// 锁住
         /// </summary>
         /// <param name="appId"></param>
-        /// <param name="orderId"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
-        public bool Lock(Guid appId, string orderId)
+        public bool Lock(Guid appId, string order)
         {
-            if (IsLockedByOther(appId, orderId)) return false;
-            Locked = DataDefinition.LockValue.Create(appId, orderId);
+            if (IsLockedByOther(appId, order)) return false;
+            Locked = DataDefinition.LockValue.Create(appId, order);
             return true;
         }
 
@@ -145,12 +145,12 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// 解锁
         /// </summary>
         /// <param name="appId"></param>
-        /// <param name="orderId"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
-        public bool Unlock(Guid appId, string orderId)
+        public bool Unlock(Guid appId, string order)
         {
             if (!IsLocked()) return true;
-            if (!Locked.IsMime(appId, orderId)) return false;
+            if (!Locked.IsMime(appId, order)) return false;
             Locked = null;
             return true;
         }

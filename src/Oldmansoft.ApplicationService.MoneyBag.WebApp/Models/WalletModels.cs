@@ -9,7 +9,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Models
     {
         public Guid AppId { get; set; }
 
-        public string OrderId { get; set; }
+        public string Order { get; set; }
 
         public int Cent { get; set; }
     }
@@ -18,6 +18,6 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Models
     {
         public Guid AppId { get; set; }
 
-        public string OrderId { get; set; }
+        public string Order { get; set; }
     }
 }

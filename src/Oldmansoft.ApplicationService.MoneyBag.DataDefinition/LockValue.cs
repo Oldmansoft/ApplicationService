@@ -13,7 +13,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.DataDefinition
     {
         public Guid AppId { get; private set; }
 
-        public string OrderId { get; private set; }
+        public string Order { get; private set; }
 
         public DateTime Created { get; private set; }
 
@@ -22,17 +22,17 @@ namespace Oldmansoft.ApplicationService.MoneyBag.DataDefinition
             Created = DateTime.UtcNow;
         }
 
-        public static LockValue Create(Guid appId, string orderId)
+        public static LockValue Create(Guid appId, string order)
         {
             var result = new LockValue();
             result.AppId = appId;
-            result.OrderId = orderId;
+            result.Order = order;
             return result;
         }
 
-        public bool IsMime(Guid appId, string orderId)
+        public bool IsMime(Guid appId, string order)
         {
-            return AppId == appId && OrderId == orderId;
+            return AppId == appId && Order == order;
         }
     }
 }

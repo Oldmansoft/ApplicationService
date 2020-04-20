@@ -126,10 +126,10 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
         /// </summary>
         /// <param name="accountId"></param>
         /// <param name="appId"></param>
-        /// <param name="orderId"></param>
+        /// <param name="order"></param>
         /// <param name="cent"></param>
         /// <returns></returns>
-        public DataDefinition.TradeState LockWallet(Guid accountId, Guid appId, string orderId, int cent)
+        public DataDefinition.TradeState LockWallet(Guid accountId, Guid appId, string order, int cent)
         {
             if (cent <= 0) throw new ArgumentOutOfRangeException("cent");
             var walletRepository = Factory.CreateWalletRepository();
@@ -138,7 +138,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
                 var wallet = LoadWallet(walletRepository, accountId);
 
                 if (!wallet.Enough(cent)) return DataDefinition.TradeState.InsufficientBalance;
-                if (!wallet.Lock(appId, orderId)) return DataDefinition.TradeState.Locked;
+                if (!wallet.Lock(appId, order)) return DataDefinition.TradeState.Locked;
                 walletRepository.Replace(wallet);
                 Factory.GetUnitOfWork().Commit();
                 return DataDefinition.TradeState.Success;
@@ -150,16 +150,16 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
         /// </summary>
         /// <param name="accountId"></param>
         /// <param name="appId"></param>
-        /// <param name="orderId"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
-        public bool UnlockWallet(Guid accountId, Guid appId, string orderId)
+        public bool UnlockWallet(Guid accountId, Guid appId, string order)
         {
             var walletRepository = Factory.CreateWalletRepository();
             using (Locker.Lock(accountId))
             {
                 var wallet = LoadWallet(walletRepository, accountId);
 
-                if (!wallet.Unlock(appId, orderId)) return false;
+                if (!wallet.Unlock(appId, order)) return false;
                 walletRepository.Replace(wallet);
                 Factory.GetUnitOfWork().Commit();
                 return true;
@@ -171,13 +171,13 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
         /// </summary>
         /// <param name="accountId"></param>
         /// <param name="clientAppId"></param>
-        /// <param name="clientOrderId"></param>
+        /// <param name="clientOrder"></param>
         /// <param name="cent"></param>
         /// <param name="description"></param>
         /// <param name="callback"></param>
         /// <param name="transactionId"></param>
         /// <returns></returns>
-        public bool Recharge(Guid accountId, Guid clientAppId, string clientOrderId, int cent, string description, string callback, out long transactionId)
+        public bool Recharge(Guid accountId, Guid clientAppId, string clientOrder, int cent, string description, string callback, out long transactionId)
         {
             if (cent <= 0) throw new ArgumentOutOfRangeException("cent");
 
@@ -191,7 +191,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
                 walletRepository.Replace(wallet);
                 Factory.GetUnitOfWork().Commit();
 
-                billing = Domain.Billing.CreateRecharge(cent, description, wallet, Generator.Next(), clientAppId, clientOrderId);
+                billing = Domain.Billing.CreateRecharge(cent, description, wallet, Generator.Next(), clientAppId, clientOrder);
                 Factory.CreateBillingRepository().Add(billing);
                 try
                 {
@@ -212,7 +212,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
             }
             if (!string.IsNullOrWhiteSpace(callback))
             {
-                var data = Newtonsoft.Json.JsonConvert.SerializeObject(new DataDefinition.CallbackPostContent(accountId, clientAppId, clientOrderId, billing.Id, cent));
+                var data = Newtonsoft.Json.JsonConvert.SerializeObject(new DataDefinition.CallbackPostContent(accountId, clientAppId, clientOrder, billing.Id, cent));
                 Factory.CreateInnerQueueRepository().Enqueue(DataDefinition.InnerQueueCategory.Callback, new DataDefinition.CallbackContent() { Uri = callback, Post = data });
             }
             transactionId = billing.Id;
@@ -224,13 +224,13 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
         /// </summary>
         /// <param name="accountId"></param>
         /// <param name="clientAppId"></param>
-        /// <param name="clientOrderId"></param>
+        /// <param name="clientOrder"></param>
         /// <param name="cent"></param>
         /// <param name="description"></param>
         /// <param name="callback"></param>
         /// <param name="transactionId"></param>
         /// <returns></returns>
-        public DataDefinition.TradeState Expend(Guid accountId, Guid clientAppId, string clientOrderId, int cent, string description, string callback, out long transactionId)
+        public DataDefinition.TradeState Expend(Guid accountId, Guid clientAppId, string clientOrder, int cent, string description, string callback, out long transactionId)
         {
             if (cent <= 0) throw new ArgumentOutOfRangeException("cent");
             transactionId = 0;
@@ -243,7 +243,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
                 {
                     return DataDefinition.TradeState.InsufficientBalance;
                 }
-                else if (wallet.IsLockedByOther(clientAppId, clientOrderId))
+                else if (wallet.IsLockedByOther(clientAppId, clientOrder))
                 {
                     return DataDefinition.TradeState.Locked;
                 }
@@ -252,7 +252,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
                 walletRepository.Replace(wallet);
                 Factory.GetUnitOfWork().Commit();
 
-                billing = Domain.Billing.CreateExpend(cent, description, wallet, Generator.Next(), clientAppId, clientOrderId);
+                billing = Domain.Billing.CreateExpend(cent, description, wallet, Generator.Next(), clientAppId, clientOrder);
                 Factory.CreateBillingRepository().Add(billing);
                 try
                 {
@@ -272,7 +272,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
             }
             if (!string.IsNullOrWhiteSpace(callback))
             {
-                var data = Newtonsoft.Json.JsonConvert.SerializeObject(new DataDefinition.CallbackPostContent(accountId, clientAppId, clientOrderId, billing.Id, cent));
+                var data = Newtonsoft.Json.JsonConvert.SerializeObject(new DataDefinition.CallbackPostContent(accountId, clientAppId, clientOrder, billing.Id, cent));
                 Factory.CreateInnerQueueRepository().Enqueue(DataDefinition.InnerQueueCategory.Callback, new DataDefinition.CallbackContent() { Uri = callback, Post = data });
             }
             transactionId = billing.Id;
@@ -284,13 +284,13 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
         /// </summary>
         /// <param name="accountId"></param>
         /// <param name="clientAppId"></param>
-        /// <param name="clientOrderId"></param>
+        /// <param name="clientOrder"></param>
         /// <param name="cent"></param>
         /// <param name="description"></param>
         /// <param name="callback"></param>
         /// <param name="transactionId"></param>
         /// <returns></returns>
-        public DataDefinition.TradeState Chargeback(Guid accountId, Guid clientAppId, string clientOrderId, int cent, string description, string callback, out long transactionId)
+        public DataDefinition.TradeState Chargeback(Guid accountId, Guid clientAppId, string clientOrder, int cent, string description, string callback, out long transactionId)
         {
             if (cent <= 0) throw new ArgumentOutOfRangeException("cent");
             transactionId = 0;
@@ -299,7 +299,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
             using (Locker.Lock(accountId))
             {
                 var wallet = LoadWallet(walletRepository, accountId);
-                if (wallet.IsLockedByOther(clientAppId, clientOrderId))
+                if (wallet.IsLockedByOther(clientAppId, clientOrder))
                 {
                     return DataDefinition.TradeState.Locked;
                 }
@@ -308,7 +308,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
                 walletRepository.Replace(wallet);
                 Factory.GetUnitOfWork().Commit();
 
-                billing = Domain.Billing.CreateExpend(cent, description, wallet, Generator.Next(), clientAppId, clientOrderId);
+                billing = Domain.Billing.CreateExpend(cent, description, wallet, Generator.Next(), clientAppId, clientOrder);
                 Factory.CreateBillingRepository().Add(billing);
                 try
                 {
@@ -328,7 +328,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Services
             }
             if (!string.IsNullOrWhiteSpace(callback))
             {
-                var data = Newtonsoft.Json.JsonConvert.SerializeObject(new DataDefinition.CallbackPostContent(accountId, clientAppId, clientOrderId, billing.Id, cent));
+                var data = Newtonsoft.Json.JsonConvert.SerializeObject(new DataDefinition.CallbackPostContent(accountId, clientAppId, clientOrder, billing.Id, cent));
                 Factory.CreateInnerQueueRepository().Enqueue(DataDefinition.InnerQueueCategory.Callback, new DataDefinition.CallbackContent() { Uri = callback, Post = data });
             }
             transactionId = billing.Id;

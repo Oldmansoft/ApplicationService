@@ -66,9 +66,9 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Repositories
             return Query().Where(o => o.AccountId == accountId && o.Created > start && o.Created < finish).OrderBy(o => o.Created).ToList();
         }
 
-        public Billing GetByClient(Guid clientAppId, string clientOrdreId)
+        public Billing GetByClient(Guid clientAppId, string clientOrder)
         {
-            var domain = Query().Where(o => o.Client.AppId == clientAppId && o.Client.OrderId == clientOrdreId && !o.Broken).FirstOrDefault();
+            var domain = Query().Where(o => o.Client.AppId == clientAppId && o.Client.Order == clientOrder && !o.Broken).FirstOrDefault();
             return domain;
         }
 
@@ -76,7 +76,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Repositories
         {
             var result = Query().Where(o => o.AccountId == accountId && o.Type == DataDefinition.BillType.Recharge && o.Created > DateTime.UtcNow.AddDays(-beforeDays))
                 .ToList()
-                .Sum(o => o.TradeCent);
+                .Sum(o => o.Trade);
             return result;
         }
     }

@@ -8,34 +8,34 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Application
 {
     public class Money : ApplicationBase
     {
-        public bool Recharge(Guid accountId, Guid clientAppId, string clientOrderId, int cent, string description, string callback, out long transactionId)
+        public bool Recharge(Guid accountId, Guid clientAppId, string clientOrder, int cent, string description, string callback, out long transactionId)
         {
             if (Factory.CreateAppClientRepository().Get(clientAppId) == null)
             {
                 throw new ArgumentException(string.Format("clientAppId 不存在 {0}", clientAppId));
             }
             var trade = new Services.TradeService(Factory);
-            return trade.Recharge(accountId, clientAppId, clientOrderId, cent, description, callback, out transactionId);
+            return trade.Recharge(accountId, clientAppId, clientOrder, cent, description, callback, out transactionId);
         }
 
-        public DataDefinition.TradeState Expend(Guid accountId, Guid clientAppId, string clientOrderId, int cent, string description, string callback, out long transactionId)
+        public DataDefinition.TradeState Expend(Guid accountId, Guid clientAppId, string clientOrder, int cent, string description, string callback, out long transactionId)
         {
             if (Factory.CreateAppClientRepository().Get(clientAppId) == null)
             {
                 throw new ArgumentException(string.Format("clientAppId 不存在 {0}", clientAppId));
             }
             var trade = new Services.TradeService(Factory);
-            return trade.Expend(accountId, clientAppId, clientOrderId, cent, description, callback, out transactionId);
+            return trade.Expend(accountId, clientAppId, clientOrder, cent, description, callback, out transactionId);
         }
 
-        public DataDefinition.TradeState Chargeback(Guid accountId, Guid clientAppId, string clientOrderId, int cent, string description, string callback, out long transactionId)
+        public DataDefinition.TradeState Chargeback(Guid accountId, Guid clientAppId, string clientOrder, int cent, string description, string callback, out long transactionId)
         {
             if (Factory.CreateAppClientRepository().Get(clientAppId) == null)
             {
                 throw new ArgumentException(string.Format("clientAppId 不存在 {0}", clientAppId));
             }
             var trade = new Services.TradeService(Factory);
-            return trade.Chargeback(accountId, clientAppId, clientOrderId, cent, description, callback, out transactionId);
+            return trade.Chargeback(accountId, clientAppId, clientOrder, cent, description, callback, out transactionId);
         }
 
         public DataDefinition.TradeState Transfer(Guid sourceAccountId, Guid targetAccountId, int cent, string description)

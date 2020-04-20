@@ -27,9 +27,9 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Controllers
             return new Application.Account().ListBilling(id, start, finish);
         }
 
-        public Data.BillingData Get(Guid appId, string orderId)
+        public Data.BillingData Get(Guid appId, string order)
         {
-            return new Application.Account().GetByClient(appId, orderId);
+            return new Application.Account().GetByClient(appId, order);
         }
 
         public Data.BillingData Get(long id)
