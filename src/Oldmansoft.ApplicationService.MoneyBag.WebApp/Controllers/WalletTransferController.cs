@@ -11,7 +11,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Controllers
     {
         public DataDefinition.TradeState Post(Guid id, [FromBody]Models.TransferRequestModel model)
         {
-            return new Application.Money().Transfer(id, model.TargetId, model.Cent, model.Description);
+            return new Application.Money().Transfer(id, model.TargetId, model.Value, model.Memo);
         }
     }
 }

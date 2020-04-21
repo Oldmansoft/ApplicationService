@@ -16,7 +16,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Repositories
 
             Add<Billing, long>(o => o.Id)
                 .SetUnique(g => g.CreateGroup(o => o.AccountId).Add(o => o.Client.AppId).Add(o => o.Client.Order))
-                .SetIndex(o => o.TransferTarget.BillingId)
+                .SetIndex(o => o.Transfer.BillingId)
                 .SetIndex(g => g.CreateGroup(o => o.AccountId).Add(o => o.Type).Add(o => o.Created))
                 .SetIndex(g => g.CreateGroup(o => o.AccountId).Add(o => o.Created))
                 .SetIndex(g => g.CreateGroup(o => o.AccountId).Add(o => o.Broken));

@@ -11,7 +11,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Models
 
         public string Order { get; set; }
 
-        public int Cent { get; set; }
+        public int Value { get; set; }
     }
 
     public class WalletUnlockModel

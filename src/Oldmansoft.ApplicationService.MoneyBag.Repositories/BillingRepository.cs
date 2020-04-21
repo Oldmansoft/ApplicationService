@@ -29,7 +29,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Repositories
 
         public Billing GetSwitchTarget(long billingId)
         {
-            return Query().Where(o => o.TransferTarget.BillingId == billingId).FirstOrDefault();
+            return Query().Where(o => o.Transfer.BillingId == billingId).FirstOrDefault();
         }
 
         public bool HasAppClientId(Guid id)

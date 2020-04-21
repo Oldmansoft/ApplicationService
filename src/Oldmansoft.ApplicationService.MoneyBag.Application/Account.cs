@@ -11,7 +11,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Application
     {
         public int GetWallet(Guid id)
         {
-            return new Services.TradeService(Factory).GetWallet(id).Cent;
+            return new Services.TradeService(Factory).GetWallet(id).Value;
         }
 
         public DataDefinition.LockValue GetLocked(Guid id)
@@ -25,11 +25,11 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Application
         /// <param name="accountId"></param>
         /// <param name="appId"></param>
         /// <param name="order"></param>
-        /// <param name="cent"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public DataDefinition.TradeState LockWallet(Guid accountId, Guid appId, string order, int cent)
+        public DataDefinition.TradeState LockWallet(Guid accountId, Guid appId, string order, int value)
         {
-            return new Services.TradeService(Factory).LockWallet(accountId, appId, order, cent);
+            return new Services.TradeService(Factory).LockWallet(accountId, appId, order, value);
         }
 
         /// <summary>

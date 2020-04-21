@@ -17,13 +17,13 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Controllers
         public bool Put(Guid id, [FromBody]Models.TradeRequestModel model)
         {
             long transactionId;
-            return new Application.Money().Recharge(id, model.ClientAppId, model.ClientOrder, model.Cent, model.Description, model.Callback, out transactionId);
+            return new Application.Money().Recharge(id, model.ClientAppId, model.ClientOrder, model.Value, model.Memo, model.Callback, out transactionId);
         }
 
         public Models.TradeResponseModel Post(Guid id, [FromBody]Models.TradeRequestModel model)
         {
             long transactionId;
-            var rechargeResult = new Application.Money().Recharge(id, model.ClientAppId, model.ClientOrder, model.Cent, model.Description, model.Callback, out transactionId);
+            var rechargeResult = new Application.Money().Recharge(id, model.ClientAppId, model.ClientOrder, model.Value, model.Memo, model.Callback, out transactionId);
             var result = new Models.TradeResponseModel();
             result.State = rechargeResult ? DataDefinition.TradeState.Success : DataDefinition.TradeState.ExistClientOrder;
             result.TransactionId = transactionId;

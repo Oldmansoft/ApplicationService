@@ -11,9 +11,9 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Models
 
         public string ClientOrder { get; set; }
 
-        public int Cent { get; set; }
+        public int Value { get; set; }
 
-        public string Description { get; set; }
+        public string Memo { get; set; }
 
         public string Callback { get; set; }
     }
@@ -29,8 +29,8 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Models
     {
         public Guid TargetId { get; set; }
 
-        public int Cent { get; set; }
+        public int Value { get; set; }
 
-        public string Description { get; set; }
+        public string Memo { get; set; }
     }
 }

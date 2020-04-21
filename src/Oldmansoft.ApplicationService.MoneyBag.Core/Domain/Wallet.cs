@@ -17,14 +17,14 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         public Guid Id { get; private set; }
 
         /// <summary>
-        /// 分
+        /// 值
         /// </summary>
-        public int Cent { get; private set; }
+        public int Value { get; private set; }
 
         /// <summary>
         /// 最后交易时间
         /// </summary>
-        public DateTime LastTime { get; private set; }
+        public DateTime Last { get; private set; }
 
         /// <summary>
         /// 交易中
@@ -56,8 +56,8 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// </summary>
         public void Init()
         {
-            Cent = 0;
-            LastTime = DateTime.UtcNow;
+            Value = 0;
+            Last = DateTime.UtcNow;
             Trading = false;
         }
 
@@ -86,8 +86,8 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         {
             if (!Trading) return;
 
-            Cent = billing.After;
-            LastTime = billing.Created;
+            Value = billing.After;
+            Last = billing.Created;
             Trading = false;
         }
 
@@ -99,12 +99,12 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// <summary>
         /// 足够
         /// </summary>
-        /// <param name="cent"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public bool Enough(int cent)
+        public bool Enough(int value)
         {
-            if (cent <= 0) throw new ArgumentOutOfRangeException();
-            return Cent >= cent;
+            if (value <= 0) throw new ArgumentOutOfRangeException();
+            return Value >= value;
         }
 
         /// <summary>

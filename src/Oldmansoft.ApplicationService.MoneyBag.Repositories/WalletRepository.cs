@@ -17,7 +17,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Repositories
 
         public long All()
         {
-            return Query().Select(o => o.Cent).ToList().Sum(o => o);
+            return Query().Select(o => o.Value).ToList().Sum(o => o);
         }
     }
 }

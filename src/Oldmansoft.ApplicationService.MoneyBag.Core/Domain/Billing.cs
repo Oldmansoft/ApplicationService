@@ -34,7 +34,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// <summary>
         /// 转帐目标
         /// </summary>
-        public DataDefinition.TransferContent TransferTarget { get; private set; }
+        public DataDefinition.TransferContent Transfer { get; private set; }
 
         /// <summary>
         /// 交易值
@@ -49,7 +49,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// <summary>
         /// 备注
         /// </summary>
-        public string Description { get; private set; }
+        public string Memo { get; private set; }
 
         /// <summary>
         /// 破碎的
@@ -66,59 +66,59 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// <summary>
         /// 创建转帐帐单
         /// </summary>
-        /// <param name="cent"></param>
-        /// <param name="description"></param>
+        /// <param name="value"></param>
+        /// <param name="memo"></param>
         /// <param name="source"></param>
         /// <param name="target"></param>
         /// <param name="sourceBillingId"></param>
         /// <param name="targetBillingId"></param>
         /// <param name="sourceBilling"></param>
         /// <param name="targetBilling"></param>
-        public static void CreateTransfer(int cent, string description, Wallet source, Wallet target, long sourceBillingId, long targetBillingId, out Billing sourceBilling, out Billing targetBilling)
+        public static void CreateTransfer(int value, string memo, Wallet source, Wallet target, long sourceBillingId, long targetBillingId, out Billing sourceBilling, out Billing targetBilling)
         {
             sourceBilling = new Billing();
             sourceBilling.Id = sourceBillingId;
             sourceBilling.Type = DataDefinition.BillType.Out;
-            sourceBilling.Trade = cent;
-            sourceBilling.After = source.Cent - cent;
+            sourceBilling.Trade = value;
+            sourceBilling.After = source.Value - value;
             sourceBilling.AccountId = source.Id;
-            sourceBilling.TransferTarget = DataDefinition.TransferContent.Create(target.Id, targetBillingId);
+            sourceBilling.Transfer = DataDefinition.TransferContent.Create(target.Id, targetBillingId);
             sourceBilling.Client = DataDefinition.ClientContent.CreateEmpty();
-            sourceBilling.Description = description;
+            sourceBilling.Memo = memo;
             sourceBilling.Created = DateTime.UtcNow;
 
             targetBilling = new Billing();
             targetBilling.Id = targetBillingId;
             targetBilling.Type = DataDefinition.BillType.In;
-            targetBilling.Trade = cent;
-            targetBilling.After = target.Cent + cent;
+            targetBilling.Trade = value;
+            targetBilling.After = target.Value + value;
             targetBilling.AccountId = target.Id;
-            targetBilling.TransferTarget = DataDefinition.TransferContent.Create(source.Id, sourceBillingId);
+            targetBilling.Transfer = DataDefinition.TransferContent.Create(source.Id, sourceBillingId);
             targetBilling.Client = DataDefinition.ClientContent.CreateEmpty();
-            targetBilling.Description = description;
+            targetBilling.Memo = memo;
             targetBilling.Created = DateTime.UtcNow;
         }
 
         /// <summary>
         /// 创建消费帐单
         /// </summary>
-        /// <param name="cent"></param>
-        /// <param name="description"></param>
+        /// <param name="value"></param>
+        /// <param name="memo"></param>
         /// <param name="wallet"></param>
         /// <param name="billingId"></param>
         /// <param name="clientAppId"></param>
         /// <param name="clientOrder"></param>
         /// <returns></returns>
-        public static Billing CreateExpend(int cent, string description, Wallet wallet, long billingId, Guid clientAppId, string clientOrder)
+        public static Billing CreateExpend(int value, string memo, Wallet wallet, long billingId, Guid clientAppId, string clientOrder)
         {
             var billing = new Billing();
             billing.Id = billingId;
             billing.Type = DataDefinition.BillType.Expend;
-            billing.Trade = cent;
-            billing.After = wallet.Cent - cent;
+            billing.Trade = value;
+            billing.After = wallet.Value - value;
             billing.AccountId = wallet.Id;
             billing.Client = DataDefinition.ClientContent.Create(clientAppId, clientOrder);
-            billing.Description = description;
+            billing.Memo = memo;
             billing.Created = DateTime.UtcNow;
             return billing;
         }
@@ -126,23 +126,23 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// <summary>
         /// 创建充值帐单
         /// </summary>
-        /// <param name="cent"></param>
-        /// <param name="description"></param>
+        /// <param name="value"></param>
+        /// <param name="memo"></param>
         /// <param name="wallet"></param>
         /// <param name="billingId"></param>
         /// <param name="clientAppId"></param>
         /// <param name="clientOrder"></param>
         /// <returns></returns>
-        public static Billing CreateRecharge(int cent, string description, Wallet wallet, long billingId, Guid clientAppId, string clientOrder)
+        public static Billing CreateRecharge(int value, string memo, Wallet wallet, long billingId, Guid clientAppId, string clientOrder)
         {
             var billing = new Billing();
             billing.Id = billingId;
             billing.Type = DataDefinition.BillType.Recharge;
-            billing.Trade = cent;
-            billing.After = wallet.Cent + cent;
+            billing.Trade = value;
+            billing.After = wallet.Value + value;
             billing.AccountId = wallet.Id;
             billing.Client = DataDefinition.ClientContent.Create(clientAppId, clientOrder);
-            billing.Description = description;
+            billing.Memo = memo;
             billing.Created = DateTime.UtcNow;
             return billing;
         }
@@ -154,12 +154,12 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Domain
         /// <returns></returns>
         public bool IsValidTransfer(Billing billing)
         {
-            if (billing.TransferTarget == null) return false;
-            if (billing.TransferTarget.BillingId != Id) return false;
-            if (billing.TransferTarget.AccountId != AccountId) return false;
-            if (TransferTarget == null) return false;
-            if (billing.Id != TransferTarget.BillingId) return false;
-            if (billing.AccountId != TransferTarget.AccountId) return false;
+            if (billing.Transfer == null) return false;
+            if (billing.Transfer.BillingId != Id) return false;
+            if (billing.Transfer.AccountId != AccountId) return false;
+            if (Transfer == null) return false;
+            if (billing.Id != Transfer.BillingId) return false;
+            if (billing.AccountId != Transfer.AccountId) return false;
             if (billing.Trade != Trade) return false;
             if (billing.Type == DataDefinition.BillType.In && Type == DataDefinition.BillType.Out) return true;
             if (billing.Type == DataDefinition.BillType.Out && Type == DataDefinition.BillType.In) return true;

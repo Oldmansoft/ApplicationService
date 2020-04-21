@@ -29,17 +29,17 @@ namespace Oldmansoft.ApplicationService.MoneyBag.DataDefinition
         public long TransactionId { get; set; }
 
         /// <summary>
-        /// 分
+        /// 支付值
         /// </summary>
         public int Paid { get; set; }
 
-        public CallbackPostContent(Guid accountId, Guid appId, string order, long transactionId, int cent)
+        public CallbackPostContent(Guid accountId, Guid appId, string order, long transactionId, int value)
         {
             AccountId = accountId;
             AppId = appId;
             Order = order;
             TransactionId = transactionId;
-            Paid = cent;
+            Paid = value;
         }
     }
 }

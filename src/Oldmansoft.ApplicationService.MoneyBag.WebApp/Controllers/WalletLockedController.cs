@@ -16,7 +16,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Controllers
 
         public DataDefinition.TradeState Post(Guid id, [FromBody]Models.WalletLockModel model)
         {
-            return new Application.Account().LockWallet(id, model.AppId, model.Order, model.Cent);
+            return new Application.Account().LockWallet(id, model.AppId, model.Order, model.Value);
         }
 
         public bool Put(Guid id, [FromBody]Models.WalletUnlockModel model)

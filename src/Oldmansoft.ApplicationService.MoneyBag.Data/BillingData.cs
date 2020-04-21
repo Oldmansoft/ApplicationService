@@ -31,7 +31,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Data
         /// <summary>
         /// 转帐目标
         /// </summary>
-        public DataDefinition.TransferContent TransferTarget { get; private set; }
+        public DataDefinition.TransferContent Transfer { get; private set; }
 
         /// <summary>
         /// 交易值
@@ -46,7 +46,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.Data
         /// <summary>
         /// 备注
         /// </summary>
-        public string Description { get; private set; }
+        public string Memo { get; private set; }
 
         /// <summary>
         /// 破碎的
