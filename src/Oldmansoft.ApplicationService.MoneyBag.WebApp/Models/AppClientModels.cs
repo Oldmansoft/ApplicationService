@@ -20,7 +20,7 @@ namespace Oldmansoft.ApplicationService.MoneyBag.WebApp.Models
         public string Description { get; set; }
 
         [Display(Name = "创建时间")]
-        public DateTime CreatedTime { get; set; }
+        public DateTime Created { get; set; }
     }
 
     public class AppClientCreateModel
